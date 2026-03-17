@@ -1,4 +1,3 @@
-import os
 from fastapi import FastAPI
 import psycopg2
 
@@ -40,3 +39,21 @@ def startup():
 @app.get("/")
 def read_root():
     return {"message": "AuditControl conectado a base correctamente 🚀"}
+    from fastapi import FastAPI
+import psycopg2
+import os
+
+@app.post("/crear_paciente")
+def crear_paciente(nombre: str, modulo: str):
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+    cur = conn.cursor()
+
+    cur.execute(
+        "INSERT INTO pacientes (nombre, modulo) VALUES (%s, %s)",
+        (nombre, modulo)
+    )
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
